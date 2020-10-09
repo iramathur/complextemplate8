@@ -105,6 +105,3 @@ variable "environment" {
 	  default=["test-vm-id-1", "test-vm-id-2"]
 }
 
-variable "prefix" {
-	default="terraformtest1"
-}
