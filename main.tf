@@ -1,12 +1,12 @@
 
 resource "azurerm_resource_group" "rg" {
-  name     = "${var.resource_group}-${var.prefix}"
+  name     = "${var.resource_group}-prefix-tfe-test-1"
   location = "${var.region}"
 }
 
 
 resource "azurerm_storage_account" "stor" {
-  name                     = "stor${var.prefix}"
+  name                     = "storprefix-tfe-test-1"
   location                 = "${var.region}"
   resource_group_name      = "${azurerm_resource_group.rg.name}"
   account_tier             = "${var.storage_account_tier}"
@@ -14,7 +14,7 @@ resource "azurerm_storage_account" "stor" {
 }
 
 resource "azurerm_availability_set" "avset" {
-  name                         = "avset${var.prefix}"
+  name                         = "avsetprefix-tfe-test-1"
   location                     = "${var.region}"
   resource_group_name          = "${azurerm_resource_group.rg.name}"
   platform_fault_domain_count  = 2
@@ -23,22 +23,22 @@ resource "azurerm_availability_set" "avset" {
 }
 
 resource "azurerm_public_ip" "lbpip" {
-  name                = "${var.prefix}-ip"
+  name                = "prefix-tfe-test-1-ip"
   location            = "${var.region}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   allocation_method   = "Dynamic"
-  domain_name_label   = "lb${var.prefix}"
+  domain_name_label   = "lbprefix-tfe-test-1"
 }
 
 resource "azurerm_virtual_network" "vnet" {
-  name                = "${var.prefix}${var.virtual_network_name}"
+  name                = "prefix-tfe-test-1${var.virtual_network_name}"
   location            = "${var.region}"
   address_space       = ["${var.address_space}"]
   resource_group_name = "${azurerm_resource_group.rg.name}"
 }
 
 resource "azurerm_subnet" "subnet" {
-  name                 = "subnet${var.prefix}"
+  name                 = "subnetprefix-tfe-test-1"
   virtual_network_name = "${azurerm_virtual_network.vnet.name}"
   resource_group_name  = "${azurerm_resource_group.rg.name}"
   address_prefix       = "${var.subnet_prefix}"
@@ -46,7 +46,7 @@ resource "azurerm_subnet" "subnet" {
 
 resource "azurerm_lb" "lb" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  name                = "lb${var.prefix}"
+  name                = "lbprefix-tfe-test-1"
   location            = "${var.region}"
 
   frontend_ip_configuration { 
@@ -58,7 +58,7 @@ resource "azurerm_lb" "lb" {
 resource "azurerm_lb_backend_address_pool" "backend_pool" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
   loadbalancer_id     = "${azurerm_lb.lb.id}"
-  name                = "BackendPool${var.prefix}"
+  name                = "BackendPoolprefix-tfe-test-1"
 }
 
 
@@ -66,7 +66,7 @@ resource "azurerm_lb_backend_address_pool" "backend_pool" {
 resource "azurerm_lb_rule" "lb_rule" {
   resource_group_name            = "${azurerm_resource_group.rg.name}"
   loadbalancer_id                = "${azurerm_lb.lb.id}"
-  name                           = "LBRule${var.prefix}"
+  name                           = "LBRuleprefix-tfe-test-1"
   protocol                       = "tcp"
   frontend_port                  = 80
   backend_port                   = 80
@@ -81,7 +81,7 @@ resource "azurerm_lb_rule" "lb_rule" {
 resource "azurerm_lb_probe" "lb_probe" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
   loadbalancer_id     = "${azurerm_lb.lb.id}"
-  name                = "tcpProbe${var.prefix}"
+  name                = "tcpProbeprefix-tfe-test-1"
   protocol            = "tcp"
   port                = 80
   interval_in_seconds = 5
@@ -89,13 +89,13 @@ resource "azurerm_lb_probe" "lb_probe" {
 }
 
 resource "azurerm_network_interface" "nic" {
-  name                = "nic${count.index}${var.prefix}"
+  name                = "nic${count.index}prefix-tfe-test-1"
   location            = "${var.region}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   count               = "${var.vm_count_per_subnet}"
 
   ip_configuration {
-    name                                    = "ipconfig${count.index}${var.prefix}"
+    name                                    = "ipconfig${count.index}prefix-tfe-test-1"
     subnet_id                               = "${azurerm_subnet.subnet.id}"
     private_ip_address_allocation           = "Dynamic"
     #load_balancer_backend_address_pools_ids = ["${azurerm_lb_backend_address_pool.backend_pool.id}"] 
@@ -103,7 +103,7 @@ resource "azurerm_network_interface" "nic" {
 }
 
 resource "azurerm_virtual_machine" "vm" {
-  name                  = "vm${count.index}${var.prefix}"
+  name                  = "vm${count.index}prefix-tfe-test-1"
   location              = "${var.region}"
   resource_group_name   = "${azurerm_resource_group.rg.name}"
   availability_set_id   = "${azurerm_availability_set.avset.id}"
@@ -119,7 +119,7 @@ resource "azurerm_virtual_machine" "vm" {
   }
 
   storage_os_disk {
-    name          = "osdisk${count.index}${var.prefix}"
+    name          = "osdisk${count.index}prefix-tfe-test-1"
     create_option = "FromImage"
   }
 
