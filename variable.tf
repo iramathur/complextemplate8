@@ -97,6 +97,11 @@ variable "admin_password" {
   default = "admin01!"
 }
 
+variable "checiingagin" {
+  description = "administrator password (recommended to disable password auth)"
+  default = "admin01!"
+}
+
 
 variable "environment" {
   description = "tag name for vm"
