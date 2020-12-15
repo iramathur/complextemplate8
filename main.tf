@@ -112,7 +112,7 @@ resource "azurerm_network_interface" "nic" {
 }
 
 resource "azurerm_virtual_machine" "vm" {
-  name                  = "vm${count.index}preftfetest1"
+  name                  = "vmS${count.index}preftfetest1"
   location              = "${var.region}"
   resource_group_name   = "${azurerm_resource_group.rg.name}"
   availability_set_id   = "${azurerm_availability_set.avset.id}"
@@ -128,7 +128,7 @@ resource "azurerm_virtual_machine" "vm" {
   }
 
   storage_os_disk {
-    name          = "osdisk${count.index}preftfetest1"
+    name          = "osdiskS${count.index}preftfetest1"
     create_option = "FromImage"
   }
 
