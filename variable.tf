@@ -99,7 +99,7 @@ variable "admin_password" {
 
 variable "checiingagin" {
   description = "administrator password (recommended to disable password auth)"
-  default = "admin04!"
+  default = "admin05!"
 }
 
 
