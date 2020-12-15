@@ -109,3 +109,9 @@ variable "environment" {
 	  default=["test-vm-id-1", "test-vm-id-2"]
 }
 
+variable "dummy" {
+	description = "tag name for vm"
+	default = "sample"
+	
+}
+
